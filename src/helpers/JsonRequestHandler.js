@@ -1,27 +1,55 @@
-const fetch=require('node-fetch');
-// const setTokenHeader = (tokenHeader) => tokenHeader !== undefined ? tokenHeader:{};
-// const setResponseHandler = (handleResponse) => handleResponse !== undefined ? handleResponse:(response) => response;
-// const createJsonRequestHandler = ({mainPath,headers,tokenHeader,handleResponse}) => {
-//   const options = {
-//     mainPath:mainPath,
-//     handleResponse:setResponseHandler(handleResponse),
-//     headers:{
-//       "Content-Type": "application/json",
-//       ...setTokenHeader(tokenHeader)
-//     }
-//   }
-//   return ({
-//     post: async (to,value) => jsonPostRequest({request}),
-//   })
-// };
-// async function responseWrapper(request,handleResponse){
-//   try {
-//     const response = await request();
-//     return await this.handleResponse(response);
-//   } catch (error) {
-//     return { status: 500, body: null };
-//   }
-// }
+const defaultObject = (params) => params !== undefined ? params:{};
+const setResponseHandler = (handleResponse) =>
+  handleResponse !== undefined ? handleResponse : (response) => response.json()
+;
+const combineParams = (parametersForThisRequest,params) => ( {...defaultObject(parametersForThisRequest), ...defaultObject(params)} ); 
+
+const JsonRequest = ({ mainPath, headers, handleResponse,params }) => {
+  const options = {
+    mainPath: mainPath,
+    headers: {
+      "Content-Type": "application/json",
+      ...defaultObject(headers)
+    }
+  }
+
+  const setUrl = (url, params) => url + new URLSearchParams(params);
+
+  return ({
+    post: async (to, parametersForThisRequest) => 
+      responseWrapper(`${mainPath}/${to}`,{ 
+        ...options,body:JSON.stringify(parametersForThisRequest.body),method:"post"
+    }),
+    getByParameters: async (from,parametersForThisRequest) => 
+      responseWrapper(
+        setUrl( `${mainPath}/${from}?` , combineParams(parametersForThisRequest,params) ), 
+          {...options,method:"get"}, 
+        handleResponse
+    ),
+    getByID: async (from,parametersForThisRequest) => 
+      responseWrapper(
+        setUrl( `${mainPath}/${from}?` , combineParams(parametersForThisRequest,params) ), 
+        { ...options, method:"get" }, 
+        handleResponse
+    ),
+    delete: async (from,parametersForThisRequest) => 
+      responseWrapper(
+        setUrl( `${mainPath}/${from}?` , combineParams(parametersForThisRequest,params) ), 
+        {...options,method:"get"}, 
+      handleResponse
+    )
+  })
+};
+
+
+async function responseWrapper(url,options, handleResponse) {
+  try {
+    const response = await fetch(url,options);
+    return await setResponseHandler()(response);
+  } catch (error) {
+    return { status: 500, body: null };
+  }
+}
 
 class JsonRequestHandler {
     constructor({ mainPath, headers,tokenHeader,handleResponse }) {
@@ -112,4 +140,4 @@ class JsonRequestHandler {
     }
   }
 
-module.exports=JsonRequestHandler;
+module.exports=JsonRequest;
