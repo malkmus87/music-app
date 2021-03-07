@@ -22,7 +22,7 @@ const JsonRequest = ({ mainPath, headers, handleResponse,params }) => {
       responseWrapper(`${mainPath}/${to}`,{ 
         ...options,body:JSON.stringify(parametersForThisRequest.body),method:"post"
     }),
-    getByParameters: async (from,parametersForThisRequest) => 
+    get: async (from,parametersForThisRequest) => 
       responseWrapper(
         setUrl( `${mainPath}/${from}?` , combineParams(parametersForThisRequest,params) ), 
           {...options,method:"get"}, 
@@ -46,7 +46,7 @@ const JsonRequest = ({ mainPath, headers, handleResponse,params }) => {
 
 async function responseWrapper(url,options, handleResponse) {
   try {
-    return await setResponseHandler()( await fetch(url,options) );
+    return await setResponseHandler(handleResponse)( await fetch(url,options) );
   } catch (error) {
     return { status: 500, body: null };
   }
