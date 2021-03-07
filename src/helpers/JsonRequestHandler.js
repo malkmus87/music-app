@@ -1,6 +1,6 @@
 const defaultObject = (object) => typeof object==='object' ? object:{};
 const setResponseHandler = (handleResponse) =>
-  handleResponse !== undefined ? handleResponse : (response) => response.json()
+  handleResponse !== undefined ? handleResponse : (response) => response
 ;
 const setUrl = (url, params) => url + new URLSearchParams(params);
 const combineParams = (parametersForThisRequest,params) => ( 
@@ -16,12 +16,9 @@ const JsonRequest = ({ mainPath, headers, handleResponse,params }) => {
     }
   }
 
-  
   return ({
     post: async (to, parametersForThisRequest) => 
-      responseWrapper(`${mainPath}/${to}`,{ 
-        ...options,body:JSON.stringify(parametersForThisRequest.body),method:"post"
-    }),
+      responseWrapper(`${mainPath}/${to}`,{ ...options, body:JSON.stringify(parametersForThisRequest.body), method:"post" }),
     getByParameters: async (from,parametersForThisRequest) => 
       responseWrapper(
         setUrl( `${mainPath}/${from}?` , combineParams(parametersForThisRequest,params) ), 
@@ -30,14 +27,17 @@ const JsonRequest = ({ mainPath, headers, handleResponse,params }) => {
     ),
     getByID: async (from,parametersForThisRequest) => 
       responseWrapper(
-        setUrl( `${mainPath}/${from}?` , combineParams(parametersForThisRequest,params) ), 
+        setUrl( 
+          `${mainPath}/${from}?`, 
+          combineParams(parametersForThisRequest,params) 
+        ), 
         { ...options, method:"get" }, 
         handleResponse
     ),
-    delete: async (from,parametersForThisRequest) => 
+    deleteByParameters: async (from,parametersForThisRequest) => 
       responseWrapper(
         setUrl( `${mainPath}/${from}?` , combineParams(parametersForThisRequest,params) ), 
-        {...options,method:"get"}, 
+        {...options,method:"delete"}, 
       handleResponse
     )
   })
