@@ -7,7 +7,8 @@ interface EffectProps{
 function fetchArtistEffect({setAlbums,musicbrainzID}: EffectProps){
     async function fetchArtistData(){
         let response = await lastFMrequest.getTopAlbumsForMbArtist(musicbrainzID);
-        if(response.topalbums !== undefined) setAlbums( response.topalbums.album);
+        
+        if(response.status === 200) setAlbums( (await response.json()).topalbums.album);
         else setAlbums([]);
     }
     fetchArtistData();

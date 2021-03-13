@@ -14,8 +14,7 @@ const SearchInput:FunctionComponent<PropsType> = ({onSubmit,children}) => {
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchKey(event.target.value);
-        if (activeTimeout !== null) window.clearTimeout(activeTimeout);
-
+        if ( activeTimeout !== null ) window.clearTimeout(activeTimeout);
         let newTimeoutID: number = window.setTimeout(() => onSearch(event.target.value), 1000);
         setActiveTimeout(newTimeoutID);
 

@@ -12,7 +12,7 @@ const ArtistOverview:FunctionComponent<PropsType> = ({musicbrainzID,effect}) => 
         () => effect({musicbrainzID,setAlbums}),
         [musicbrainzID]
     );
-    return(
+    return (
         <div>
             {albums.map( (album:any, index:number) => 
                 <div key={index}>
@@ -20,6 +20,6 @@ const ArtistOverview:FunctionComponent<PropsType> = ({musicbrainzID,effect}) => 
                 </div>
             )}
         </div>
-    )
+    );
 }
 export default ArtistOverview;
