@@ -4,11 +4,11 @@ import {ButtonStyle,TextInputStyle} from '../../styles/inputs';
 import {SearchInputStyle,SearchInputTextStyle,SearchButtonStyle} from './Style';
 import {StaticWideFramed} from '../../styles/layouts';
 
-interface PropsType {
+interface SearchInputProps {
     onSubmit: Function;
 }
 
-const SearchInput:FunctionComponent<PropsType> = ({onSubmit,children}) => {
+const SearchInput:FunctionComponent<SearchInputProps> = ({onSubmit,children}) => {
     const [searchKey, setSearchKey] = useState<string>("");
     const [activeTimeout, setActiveTimeout] = useState<number | null>(null);
 

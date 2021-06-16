@@ -3,11 +3,10 @@ import * as React from 'react';
 
 import {useState,useEffect} from 'react';
 import musicbrainzResource from './resources/musicbrainz';
+import App from './App';
 import ArtistOverview from './components/ArtistOverview';
 import fetchArtistEffect from './helpers/effects/fetchArtist';
 
-
-// testResources();
 function Index(){
     const [musicbrainzID,setMusicbrainzID] = useState(null);
     async function loadArtist(){
@@ -18,11 +17,13 @@ function Index(){
     useEffect(() => {
         loadArtist();
     },[]);
-    return(<div>TestAre
-        {musicbrainzID !== null ? 
-            <ArtistOverview musicbrainzID={musicbrainzID} effect={fetchArtistEffect}/>:null
-        }
-        </div>
+    return(
+    // <div>TestAre
+    //     {musicbrainzID !== null ? 
+    //         <ArtistOverview musicbrainzID={musicbrainzID} effect={fetchArtistEffect}/>:null
+    //     }
+    //     </div>
+        <App/>
     )
 }
 

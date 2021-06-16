@@ -1,3 +1,5 @@
+import * as CSS from 'csstype';
+
 export const StaticWideFramed = {
     width:348,
     border:"1px dimgrey solid"
@@ -18,6 +20,7 @@ export const Column = {
 export const ColumnAlignedToRight = {
     display:"flex",
     justifyContent:"right"
+    
 }
 
 export const BlockLabel = {

@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {FunctionComponent,useEffect,useState} from 'react';
 
-interface PropsType{
+interface ArtistOverviewProps{
     musicbrainzID:string;
     effect:Function;
 }
 
-const ArtistOverview:FunctionComponent<PropsType> = ({musicbrainzID,effect}) => {
+const ArtistOverview:FunctionComponent<ArtistOverviewProps> = ({musicbrainzID,effect}) => {
     const [albums,setAlbums] = useState<Array<any>>([]);
     useEffect(
         () => effect({musicbrainzID,setAlbums}),

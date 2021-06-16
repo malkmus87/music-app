@@ -13,7 +13,7 @@ const PageTop:FunctionComponent = () => {
     }
     return(
         <div>
-            <SearchInput>
+            <SearchInput onSubmit={loadArtists}>
             </SearchInput>
         </div>
     )
